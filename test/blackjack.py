@@ -116,6 +116,7 @@ def play_blackjack():
     
     #-------------Game Logic-----------------
     game_on = True
+    current_bet_amount = 0
     
     while game_on == True:
         for i in range(2):
@@ -124,14 +125,47 @@ def play_blackjack():
         print(player)
         print(dealer)
         
+        betting = False
+        
+        while betting == False:
+            choice = input(f"Will {player.name} make a bet? (y/n)").lower()
+            
+            if choice in ['y']:
+                bet_amount = 'wrong'
+                
+                while type(bet_amount) != type(int()) or player.chips<current_bet_amount:
+                    bet_amount =  int(input(f"{player.name} currently has {player.chips} chips. Please enter a viable amount: "))
+                    
+                    if type(bet_amount) != type(int()):
+                        print("Sorry I do not understand. Please enter an amount of integers!")
+                    
+                    current_bet_amount = player.bet(bet_amount)
+                    print(current_bet_amount)
+                    
+                    betting = True
+                
+                
+            elif choice in ['n']:
+                print("Cannot proceed with the game without a bet. Game ends!")
+                game_on = False
+                break
+        
+        if game_on == False:
+            break
+        
         #Print Player and Dealer Hands  
         dealer.check_hand()
         player.check_hand()
         
-        try:
-            choice = input(f"Would {}")
-        except:
-            print("Error")
+        choice = 'wrong'
+        
+        while choice not in ['hit', 'stay']:
+            choice = input("What is your action? Type \n 1. stay, this is to keep hand. \n 2. hit, to draw another card: ")
+            
+            if choice not in ['hit', 'stay']:
+                print("Sorry I can not understand! Please enter \n 1. stay \n 2. hit")
+        
+        print(choice)
         game_on = False
     
 
